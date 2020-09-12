@@ -11,5 +11,8 @@
  * file per style scope.
  *
  *= require_tree .
- *= require_self
+ *= require_self:
  */
+table#movies th.hilite {
+  background-color: yellow;
+}
