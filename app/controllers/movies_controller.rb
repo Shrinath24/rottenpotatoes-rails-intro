@@ -12,21 +12,27 @@ class MoviesController < ApplicationController
 
   def index
     #@all_ratings = Movie.distinct.pluck(:rating)
-    
-   sort = params[:sort]
+   if params[:sort].nil?
+      params[:sort] = session[:sort]
+   end
+   if params[:ratings].nil?
+      params[:ratings] = session[:ratings]
+   end
+    sort = params[:sort]
+    session[:sort] = params[:sort]
     if 'title' == sort
        @movies = Movie.order(:title)
     elsif 'date' == sort
        @movies = Movie.order(:release_date)
-    else
+    end
         rating_param = params[:ratings]
+        session[:ratings] = params[:ratings]
         if !rating_param.nil?
           selected_ratings = rating_param.keys
           @movies = Movie.with_ratings(selected_ratings)
         else
           @movies = Movie.all
         end
-    end
     @all_ratings = Movie.ratings_scope
   end
 
